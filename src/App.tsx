@@ -5,15 +5,15 @@
 
 import { useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
-import {
-  Sword,
-  Wind,
-  Map,
-  Users,
-  History,
-  Sun,
-  CloudRain,
-  Cloud,
+import { 
+  Sword, 
+  Wind, 
+  Map, 
+  Users, 
+  History, 
+  Sun, 
+  CloudRain, 
+  Cloud, 
   Zap,
   ChevronDown,
   X
@@ -24,11 +24,11 @@ import { ThemeToggle } from "./components/ThemeToggle";
 import { Button } from "./components/ui/button";
 import { cn } from "./lib/utils";
 
-import heroImage from "./assets/hero.jpg";
-import secondImage from "./assets/second.png";
-import jinSakai from "./assets/jinSakai.jpg";
-import lordShimura from "./assets/lordShimura.jpg";
-import khotunKhan from "./assets/khotunKhan.jpg";
+ const heroImage = "https://picsum.photos/seed/tsushima-fire/1200/800';
+const secondImage = "https://picsum.photos/seed/tsushima-fire/1200/800";
+const jinSakai = "https://picsum.photos/seed/jinsakai/800/1000";
+const lordShimura = "https://picsum.photos/seed/shimura/800/1000";
+const khotunKhan = "https://picsum.photos/seed/khotun/800/1000";
 
 
 
@@ -93,7 +93,7 @@ export default function App() {
     <div className="relative min-h-screen selection:bg-tsushima-red selection:text-white">
       <SakuraParticles />
       <WeatherSystem weather={weather} />
-
+      
       {/* Navigation / Controls */}
       <nav className="fixed top-6 right-6 z-[100] flex items-center gap-4">
         <div className="flex bg-background/50 backdrop-blur-md border border-border/50 rounded-full p-1">
@@ -120,11 +120,11 @@ export default function App() {
 
       {/* Hero Section */}
       <section className="relative h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-        <motion.div
+        <motion.div 
           style={{ opacity, scale }}
           className="z-10"
         >
-          <motion.p
+          <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
@@ -132,7 +132,7 @@ export default function App() {
           >
             A Tribute to
           </motion.p>
-          <motion.h1
+          <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
@@ -141,7 +141,7 @@ export default function App() {
             Ghost of <br />
             <span className="text-tsushima-red dark:text-tsushima-gold">Tsushima</span>
           </motion.h1>
-          <motion.p
+          <motion.p 
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.7 }}
             transition={{ delay: 0.6 }}
@@ -151,7 +151,7 @@ export default function App() {
           </motion.p>
         </motion.div>
 
-        <motion.div
+        <motion.div 
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
           className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-50"
@@ -162,9 +162,9 @@ export default function App() {
         {/* Background Image with Parallax */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background" />
-          <img
-            src={heroImage}
-            alt="Tsushima Landscape"
+          <img 
+            src={heroImage} 
+            alt="Tsushima Landscape" 
             className="w-full h-full object-cover opacity-40 dark:opacity-20"
             referrerPolicy="no-referrer"
           />
@@ -191,15 +191,15 @@ export default function App() {
               As the island burns in the wake of the first wave of the Mongol assault, samurai warrior Jin Sakai stands as one of the last surviving members of his clan. He is resolved to do whatever it takes, at any cost, to protect his people and reclaim his home.
             </p>
           </motion.div>
-          <motion.div
+          <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             className="relative aspect-video rounded-2xl overflow-hidden border border-border/50 shadow-2xl"
           >
-            <img
+            <img 
               src={secondImage}
-              alt="Tsushima on Fire"
+              alt="Tsushima on Fire" 
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
             />
@@ -227,8 +227,8 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.2 }}
-                whileHover={{
-                  scale: 1.03,
+                whileHover={{ 
+                  scale: 1.03, 
                   borderColor: "rgba(139, 0, 0, 0.8)",
                   boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
                 }}
@@ -236,9 +236,9 @@ export default function App() {
                 className="group relative bg-background border border-border/50 rounded-2xl overflow-hidden cursor-pointer transition-colors duration-500"
               >
                 <div className="aspect-[3/4] overflow-hidden">
-                  <img
-                    src={char.image}
-                    alt={char.name}
+                  <img 
+                    src={char.image} 
+                    alt={char.name} 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     referrerPolicy="no-referrer"
                   />
@@ -279,8 +279,8 @@ export default function App() {
               </button>
 
               <div className="w-full md:w-2/5 aspect-[3/4] md:aspect-auto">
-                <img
-                  src={selectedCharacter.image}
+                <img 
+                  src={selectedCharacter.image} 
                   alt={selectedCharacter.name}
                   className="w-full h-full object-cover"
                 />
@@ -291,7 +291,7 @@ export default function App() {
                   {selectedCharacter.role}
                 </p>
                 <h2 className="text-4xl md:text-5xl font-heading mb-6">{selectedCharacter.name}</h2>
-
+                
                 <div className="grid grid-cols-3 gap-4 mb-8">
                   {Object.entries(selectedCharacter.stats).map(([key, value]) => (
                     <div key={key} className="text-center p-3 rounded-xl bg-black/5 dark:bg-white/5 border border-border/50">
@@ -304,9 +304,9 @@ export default function App() {
                 <p className="text-lg font-serif leading-relaxed text-muted-foreground">
                   {selectedCharacter.details}
                 </p>
-
+                
                 <div className="mt-8 pt-8 border-t border-border/50">
-                  <Button
+                  <Button 
                     onClick={() => setSelectedCharacter(null)}
                     className="bg-tsushima-red hover:bg-tsushima-red/90 text-white font-heading tracking-widest uppercase"
                   >
