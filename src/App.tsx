@@ -24,11 +24,13 @@ import { ThemeToggle } from "./components/ThemeToggle";
 import { Button } from "./components/ui/button";
 import { cn } from "./lib/utils";
 
-const heroImage = "https://picsum.photos/seed/tsushima-hero/1920/1080";
+ const heroImage = "https://picsum.photos/seed/tsushima-fire/1200/800';
 const secondImage = "https://picsum.photos/seed/tsushima-fire/1200/800";
 const jinSakai = "https://picsum.photos/seed/jinsakai/800/1000";
 const lordShimura = "https://picsum.photos/seed/shimura/800/1000";
 const khotunKhan = "https://picsum.photos/seed/khotun/800/1000";
+
+
 
 const characters = [
   {
