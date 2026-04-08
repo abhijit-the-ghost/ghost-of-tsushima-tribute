@@ -4,7 +4,7 @@
  */
 
 import { useState } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import { 
   Sword, 
   Wind, 
@@ -15,7 +15,8 @@ import {
   CloudRain, 
   Cloud, 
   Zap,
-  ChevronDown
+  ChevronDown,
+  X
 } from "lucide-react";
 import { SakuraParticles } from "./components/SakuraParticles";
 import { WeatherSystem, WeatherType } from "./components/WeatherSystem";
@@ -23,24 +24,36 @@ import { ThemeToggle } from "./components/ThemeToggle";
 import { Button } from "./components/ui/button";
 import { cn } from "./lib/utils";
 
+const heroImage = "https://picsum.photos/seed/tsushima-hero/1920/1080";
+const secondImage = "https://picsum.photos/seed/tsushima-fire/1200/800";
+const jinSakai = "https://picsum.photos/seed/jinsakai/800/1000";
+const lordShimura = "https://picsum.photos/seed/shimura/800/1000";
+const khotunKhan = "https://picsum.photos/seed/khotun/800/1000";
+
 const characters = [
   {
     name: "Jin Sakai",
     role: "The Ghost",
     description: "A samurai who must choose between his code of honor and the survival of his people.",
-    image: "https://picsum.photos/seed/jinsakai/800/1000",
+    details: "Jin Sakai is the main protagonist of Ghost of Tsushima. Raised as a samurai by his uncle Lord Shimura, Jin was taught the ways of honor and direct combat. However, after the devastating defeat at Komoda Beach, Jin realizes that traditional samurai tactics are not enough to defeat the Mongol invaders. He begins to adopt the persona of 'The Ghost', using stealth, fear, and unconventional weapons to dismantle the Mongol army from the shadows.",
+    image: jinSakai,
+    stats: { honor: "Low", stealth: "Master", combat: "Versatile" }
   },
   {
     name: "Lord Shimura",
     role: "The Jito",
     description: "Jin's uncle and the ruler of Tsushima, strictly bound by the samurai code.",
-    image: "https://picsum.photos/seed/shimura/800/1000",
+    details: "Lord Shimura is the Jito (lord) of Tsushima and Jin's maternal uncle. He is a staunch traditionalist who believes that honor is everything. To him, fighting from the shadows is a coward's path. His rigid adherence to the samurai code often puts him at odds with Jin's evolving tactics, creating a tragic conflict between family loyalty and ideological duty.",
+    image: lordShimura,
+    stats: { honor: "Absolute", stealth: "None", combat: "Traditional" }
   },
   {
     name: "Khotun Khan",
     role: "The Invader",
     description: "The ruthless leader of the Mongol army seeking to conquer all of Japan.",
-    image: "https://picsum.photos/seed/khotun/800/1000",
+    details: "Khotun Khan is the grandson of Genghis Khan and the leader of the Mongol invasion of Tsushima. Unlike many villains, Khotun is highly intelligent and has studied Japanese culture, language, and the samurai code to better exploit their weaknesses. He is a master of psychological warfare and is willing to use any means necessary to achieve total conquest.",
+    image: khotunKhan,
+    stats: { honor: "None", stealth: "Strategic", combat: "Brutal" }
   }
 ];
 
@@ -69,6 +82,7 @@ const gameplayFeatures = [
 
 export default function App() {
   const [weather, setWeather] = useState<WeatherType>("sunny");
+  const [selectedCharacter, setSelectedCharacter] = useState<typeof characters[0] | null>(null);
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.9]);
@@ -147,7 +161,7 @@ export default function App() {
         <div className="absolute inset-0 -z-10">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background" />
           <img 
-            src="https://picsum.photos/seed/tsushima-landscape/1920/1080" 
+            src={heroImage} 
             alt="Tsushima Landscape" 
             className="w-full h-full object-cover opacity-40 dark:opacity-20"
             referrerPolicy="no-referrer"
@@ -182,7 +196,7 @@ export default function App() {
             className="relative aspect-video rounded-2xl overflow-hidden border border-border/50 shadow-2xl"
           >
             <img 
-              src="https://picsum.photos/seed/tsushima-fire/1200/800" 
+              src={secondImage}
               alt="Tsushima on Fire" 
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
@@ -211,13 +225,19 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.2 }}
-                className="group relative bg-background border border-border/50 rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-500"
+                whileHover={{ 
+                  scale: 1.03, 
+                  borderColor: "rgba(139, 0, 0, 0.8)",
+                  boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+                }}
+                onClick={() => setSelectedCharacter(char)}
+                className="group relative bg-background border border-border/50 rounded-2xl overflow-hidden cursor-pointer transition-colors duration-500"
               >
                 <div className="aspect-[3/4] overflow-hidden">
                   <img 
                     src={char.image} 
                     alt={char.name} 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     referrerPolicy="no-referrer"
                   />
                 </div>
@@ -231,6 +251,71 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      {/* Character Modal */}
+      <AnimatePresence>
+        {selectedCharacter && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedCharacter(null)}
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-4xl bg-tsushima-paper dark:bg-tsushima-ink border border-tsushima-red/30 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row"
+            >
+              <button
+                onClick={() => setSelectedCharacter(null)}
+                className="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/20 hover:bg-black/40 transition-colors"
+              >
+                <X className="h-6 w-6 text-white" />
+              </button>
+
+              <div className="w-full md:w-2/5 aspect-[3/4] md:aspect-auto">
+                <img 
+                  src={selectedCharacter.image} 
+                  alt={selectedCharacter.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              <div className="w-full md:w-3/5 p-8 md:p-12 overflow-y-auto max-h-[60vh] md:max-h-none">
+                <p className="text-tsushima-red dark:text-tsushima-gold font-heading tracking-widest uppercase text-sm mb-2">
+                  {selectedCharacter.role}
+                </p>
+                <h2 className="text-4xl md:text-5xl font-heading mb-6">{selectedCharacter.name}</h2>
+                
+                <div className="grid grid-cols-3 gap-4 mb-8">
+                  {Object.entries(selectedCharacter.stats).map(([key, value]) => (
+                    <div key={key} className="text-center p-3 rounded-xl bg-black/5 dark:bg-white/5 border border-border/50">
+                      <p className="text-[10px] uppercase tracking-tighter text-muted-foreground mb-1">{key}</p>
+                      <p className="text-sm font-heading text-tsushima-red dark:text-tsushima-gold">{value}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <p className="text-lg font-serif leading-relaxed text-muted-foreground">
+                  {selectedCharacter.details}
+                </p>
+                
+                <div className="mt-8 pt-8 border-t border-border/50">
+                  <Button 
+                    onClick={() => setSelectedCharacter(null)}
+                    className="bg-tsushima-red hover:bg-tsushima-red/90 text-white font-heading tracking-widest uppercase"
+                  >
+                    Return to Tsushima
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Gameplay Section */}
       <section className="py-24 px-4 max-w-6xl mx-auto">
